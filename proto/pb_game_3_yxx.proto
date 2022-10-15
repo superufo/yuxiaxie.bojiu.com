@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+option go_package = "/proto";
+
+
+//进入游戏
+message m_game_3_yxx_enter_game_tos{
+  optional int32  game_id = 1;           //0大厅1龙虎2红黑3鱼虾蟹4百家乐
+  optional int32  room    = 2;         	 //房间
+  optional int32  desk    = 3;           //桌子
+}
+
+message m_game_3_yxx_enter_game_toc{
+  optional int32  game_id = 1;           //0大厅1龙虎2红黑3鱼虾蟹4百家乐
+  optional int32  room    = 2;         	 //房间
+  optional int32  desk    = 3;           //桌子
+}
+
+message m_init_game_3_yxx_tos{
+  optional string    s_id     = 1;  // 玩家Id
+}
+
+
+message m_init_game_3_yxx_toc{
+  optional string                     s_id            = 1;    // 玩家id
+  optional string                     nickname        = 2;    // 玩家名称
+  optional int64                      coin            = 3;    // 金币
+  repeated p_desk_ood                 yxx_ood         = 4;    // 鱼虾蟹赔率
+  repeated p_all_area_info            area_info       = 5;    // 所有区域的信息
+  optional int32                      status_now      = 6;    // 当前状态
+  optional int32                      next_time       = 7;    // 下次状态切换剩余的时间
+  repeated p_game_history             history         = 8;    // 游戏记录
+  optional string                      set            = 9;   // 当前局数
+}
+
+message p_desk_ood{
+  optional int32 times = 1;   // 出现下注图案的次数
+  optional int32 ood   = 2;   // 赔率
+}
+
+message p_all_area_info{
+  optional int32 area     = 1; // 下注区域
+  optional int64 all_bet  = 2; // 下注总额
+  optional int64 my_bet   = 3; // 我的下注
+}
+
+message p_game_history{
+  optional int32    set    = 1;   // 局数
+  repeated int32    result = 2;   // 结果
+}
+
+// 玩家投注 C--> S
+message m_player_bet_yxx_3_tos{
+  optional int32  area    = 1;     // 投注区域
+  optional int64  nums    = 2;     // 投注数量
+  optional string s_id    = 3;     // 玩家id
+}
+
+// 返回玩家下注信息
+message m_player_bet_yxx_3_toc{
+  optional int32   area                  = 1;							// 下注区域
+  optional int64   chip                  = 2;						  // 下注金额
+  repeated p_player_bet_yxx_3 player_bet = 3;             // 玩家下注总额
+  optional int64   my_chip               = 4;							// 我自己剩下的筹码
+}
+message p_player_bet_yxx_3{
+  optional int32   area = 1;									// 下注区域
+  optional int64   my_all_chip = 2;					  // 该区域我自己的下注总额
+}
+
+message m_game_status_change_yxx_3_toc{
+  optional int32            next_status    = 1;  // 即将切换的状态
+  optional int32            time           = 2;  // 状态持续时间
+  repeated p_player_result  res            = 3;  // 玩家的游戏结果
+  repeated p_all_area_info  bet_info       = 4;  // 下注状态时需要的信息
+}
+
+message p_player_result{
+  optional string      s_id  = 1;     // 玩家Id
+  optional int64       nums  = 2;     // 输赢数量
+  repeated int32       dice  = 3;     // 骰子的结果
+}
+
